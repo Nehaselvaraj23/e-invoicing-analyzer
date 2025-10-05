@@ -9,8 +9,8 @@ export const healthCheck = async (req: Request, res: Response): Promise<Response
     await db.get('SELECT 1 as test');
     
     // Get metrics
-    const totalReports = await db.get('SELECT COUNT(*) as count FROM reports') as { count: number };
-    const totalUploads = await db.get('SELECT COUNT(*) as count FROM uploads') as { count: number };
+   const totalReports = (await db.get('SELECT COUNT(*) as count FROM reports')) as { count: number };
+const totalUploads = (await db.get('SELECT COUNT(*) as count FROM uploads')) as { count: number };
     const recentReports = await getRecentReports(5);
 
     // System metrics
