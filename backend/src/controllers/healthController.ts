@@ -3,10 +3,9 @@ import { Database } from '../config/database';
 
 export const healthCheck = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Check database connection
     const db = new Database();
     
-    // Instead of type conversion, properly access the database
+    // Check database connection properly
     const result = await db.query('SELECT 1 as status');
     
     res.status(200).json({
@@ -21,6 +20,7 @@ export const healthCheck = async (req: Request, res: Response): Promise<void> =>
       status: 'Service Unavailable',
       timestamp: new Date().toISOString(),
       error: error instanceof Error ? error.message : 'Unknown error',
+      database: 'disconnected'
     });
   }
 };
