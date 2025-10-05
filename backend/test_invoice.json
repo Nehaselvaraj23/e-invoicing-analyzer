@@ -1,0 +1,14 @@
+{
+  "inv_id": "TEST-001",
+  "date": "2024-01-15",
+  "currency": "AED",
+  "seller_name": "Test Company",
+  "seller_trn": "123456789",
+  "seller_country": "AE",
+  "buyer_name": "Test Customer",
+  "buyer_trn": "987654321",
+  "buyer_country": "AE",
+  "total_excl_vat": 1000,
+  "vat_amount": 50,
+  "total_incl_vat": 1050
+}
