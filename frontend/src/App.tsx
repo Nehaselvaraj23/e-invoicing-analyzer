@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Sun, Moon, Download, Share2, Mail, Map, History } from 'lucide-react';
+
 interface Questionnaire {
   webhooks: boolean;
   sandbox_env: boolean;
@@ -93,7 +93,7 @@ function App() {
 
   const loadRecentReports = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/reports?limit=10');
+      const response = await axios.get('https://e-invoicing-analyzer-j0q6.onrender.com/reports?limit=10');
       setRecentReports(response.data);
     } catch (error) {
       console.error('Failed to load recent reports:', error);
@@ -123,7 +123,7 @@ function App() {
     });
 
     try {
-      const response = await axios.post('http://localhost:3001/upload', formData, {
+      const response = await axios.post('https://e-invoicing-analyzer-j0q6.onrender.com/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -148,7 +148,7 @@ function App() {
       let errorMessage = 'Upload failed. ';
       
       if (error.code === 'ECONNREFUSED') {
-        errorMessage += 'Cannot connect to backend server. Make sure it\'s running on http://localhost:3001';
+        errorMessage += 'Cannot connect to backend server. Make sure it\'s running.';
       } else if (error.response) {
         errorMessage += `Server error (${error.response.status}): ${error.response.data?.error || error.response.statusText}`;
       } else if (error.request) {
@@ -180,7 +180,7 @@ function App() {
     console.log('📋 Questionnaire:', questionnaire);
 
     try {
-      const response = await axios.post('http://localhost:3001/analyze', {
+      const response = await axios.post('https://e-invoicing-analyzer-j0q6.onrender.com/analyze', {
         uploadId: targetUploadId,
         questionnaire
       }, {
@@ -268,7 +268,7 @@ function App() {
     if (!analysisResult || !emailData.email) return;
 
     try {
-      await axios.post('http://localhost:3001/email-report', {
+      await axios.post('https://e-invoicing-analyzer-j0q6.onrender.com/email-report', {
         reportId: analysisResult.reportId,
         email: emailData.email,
         message: emailData.message
@@ -316,7 +316,7 @@ function App() {
 
   const loadReport = async (reportId: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/report/${reportId}`);
+      const response = await axios.get(`https://e-invoicing-analyzer-j0q6.onrender.com/report/${reportId}`);
       setAnalysisResult(response.data);
       setCurrentStep(3);
       setShowRecentReports(false);
@@ -353,7 +353,7 @@ function App() {
               className="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               title="Recent Reports"
             >
-              <History className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+              📋
             </button>
 
             {/* Theme Toggle */}
@@ -362,11 +362,7 @@ function App() {
               className="p-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             >
-              {darkMode ? (
-                <Sun className="w-5 h-5 text-yellow-500" />
-              ) : (
-                <Moon className="w-5 h-5 text-gray-600" />
-              )}
+              {darkMode ? '☀️' : '🌙'}
             </button>
           </div>
         </div>
@@ -812,8 +808,7 @@ function App() {
                   onClick={copyShareableLink}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center"
                 >
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Copy Link
+                  📋 Copy Link
                 </button>
               </div>
               
@@ -823,24 +818,21 @@ function App() {
                   onClick={generatePDFReport}
                   className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center"
                 >
-                  <Download className="w-4 h-4 mr-2" />
-                  PDF Report
+                  📄 PDF Report
                 </button>
                 
                 <button
                   onClick={exportMappingTemplate}
                   className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center"
                 >
-                  <Map className="w-4 h-4 mr-2" />
-                  Mapping Template
+                  🗺️ Mapping Template
                 </button>
                 
                 <button
                   onClick={() => setEmailDialog(true)}
                   className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center"
                 >
-                  <Mail className="w-4 h-4 mr-2" />
-                  Email Report
+                  📧 Email Report
                 </button>
               </div>
             </div>
