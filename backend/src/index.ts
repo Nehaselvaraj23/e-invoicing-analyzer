@@ -68,7 +68,7 @@ app.get('/', (req, res) => {
 });
 
 // Error handling middleware
-app.use(errorHandler);
+// app.use(errorHandler);
 
 // Start server
 const startServer = async () => {
