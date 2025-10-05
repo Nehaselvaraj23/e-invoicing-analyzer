@@ -4,8 +4,8 @@
   "description": "E-Invoicing Analyzer Application",
   "main": "backend/server.js",
   "scripts": {
-    "build": "cd backend && npm install",
-    "start": "cd backend && npm start",
+    "build": "npm install && npm run build",
+    "start": "npm start",
     "dev": "cd backend && npm run dev",
     "test": "cd backend && npm test",
     "install-deps": "cd backend && npm install"
