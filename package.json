@@ -19,12 +19,12 @@
     "analyzer",
     "backend"
   ],
-  "author": "nehaseivaraj23",
+  "author": "nehaselvaraj23",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/nehaseivaraj23/e-invoicing-analyzer"
+    "url": "https://github.com/nehaselvaraj23/e-invoicing-analyzer"
   }
 }
