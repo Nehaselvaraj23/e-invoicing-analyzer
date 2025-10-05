@@ -1,16 +1,16 @@
-// src/config/multer.ts
 import multer from 'multer';
 import { Request } from 'express';
 
 const storage = multer.memoryStorage();
 
-const fileFilter: (req: any, file: Express.Multer.File, callback: multer.FileFilterCallback
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  callback: multer.FileFilterCallback
 ) => {
-  // Get file extension
   const fileExtension = file.originalname.toLowerCase().split('.').pop();
   const allowedExtensions = ['csv', 'json'];
   
-  // Check if file has allowed extension
   if (fileExtension && allowedExtensions.includes(fileExtension)) {
     callback(null, true);
   } else {
