@@ -2,5 +2,8 @@
   "build": {
     "type": "node",
     "path": "backend"
+  },
+  "run": {
+    "command": "chmod +x backend/start.sh && ./backend/start.sh"
   }
 }
