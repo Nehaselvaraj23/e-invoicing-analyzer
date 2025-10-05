@@ -1,73 +1,51 @@
 import { Request, Response } from 'express';
-import { initializeDatabase, getRecentReports } from '../services/database';
+import { Database } from '../config/database';
 
-export const healthCheck = async (req: Request, res: Response): Promise<Response> => {
+export const healthCheck = async (req: Request, res: Response): Promise<void> => {
   try {
-    const db = await initializeDatabase();
+    // Check database connection
+    const db = new Database();
     
-    // Test database connection
-    await db.get('SELECT 1 as test');
+    // Instead of type conversion, properly access the database
+    const result = await db.query('SELECT 1 as status');
     
-    // Get metrics
-   const totalReports = (await db.get('SELECT COUNT(*) as count FROM reports')) as { count: number };
-const totalUploads = (await db.get('SELECT COUNT(*) as count FROM uploads')) as { count: number };
-    const recentReports = await getRecentReports(5);
-
-    // System metrics
-    const memoryUsage = process.memoryUsage();
-    const uptime = process.uptime();
-
-    return res.json({
-      status: 'healthy',
+    res.status(200).json({
+      status: 'OK',
       timestamp: new Date().toISOString(),
-      service: 'e-invoicing-analyzer',
-      version: '2.0.0',
-      environment: process.env.NODE_ENV || 'development',
-      
-      database: {
-        status: 'connected',
-        type: 'SQLite',
-        total_reports: totalReports.count,
-        total_uploads: totalUploads.count
-      },
-
-      system: {
-        uptime: `${Math.floor(uptime / 60)} minutes`,
-        memory: {
-          used: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)}MB`,
-          total: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)}MB`,
-          rss: `${Math.round(memoryUsage.rss / 1024 / 1024)}MB`
-        },
-        node_version: process.version,
-        platform: process.platform
-      },
-
-      features: {
-        p1_ai_guidance: true,
-        p1_pdf_export: true,
-        p1_recent_reports: true,
-        p2_country_rules: true,
-        p2_email_reports: true,
-        p2_theme_support: true,
-        p2_mapping_export: true
-      },
-
-      recent_activity: {
-        last_reports: recentReports.map((r: any) => ({
-          id: r.id,
-          score: r.scores_overall,
-          created: r.created_at
-        }))
-      }
+      database: result ? 'connected' : 'disconnected',
+      uptime: process.uptime(),
+      memory: process.memoryUsage(),
     });
   } catch (error) {
-    console.error('Health check failed:', error);
-    return res.status(503).json({
-      status: 'unhealthy',
+    res.status(503).json({
+      status: 'Service Unavailable',
       timestamp: new Date().toISOString(),
-      service: 'e-invoicing-analyzer',
-      database: 'disconnected',
-      error: 'Database connection failed'
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};
+
+export const readinessCheck = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const db = new Database();
+    const result = await db.query('SELECT 1 as status');
+    
+    if (result) {
+      res.status(200).json({
+        status: 'READY',
+        timestamp: new Date().toISOString(),
+      });
+    } else {
+      res.status(503).json({
+        status: 'NOT_READY',
+        timestamp: new Date().toISOString(),
+      });
+    }
+  } catch (error) {
+    res.status(503).json({
+      status: 'NOT_READY',
+      timestamp: new Date().toISOString(),
+      error: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 };
