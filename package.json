@@ -1,0 +1,30 @@
+{
+  "name": "e-invoicing-analyzer",
+  "version": "1.0.0",
+  "description": "E-Invoicing Analyzer Application",
+  "main": "backend/server.js",
+  "scripts": {
+    "build": "cd backend && npm install",
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "test": "cd backend && npm test",
+    "install-deps": "cd backend && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "invoicing",
+    "analyzer",
+    "backend"
+  ],
+  "author": "nehaseivaraj23",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nehaseivaraj23/e-invoicing-analyzer"
+  }
+}
