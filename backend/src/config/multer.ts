@@ -4,10 +4,7 @@ import { Request } from 'express';
 
 const storage = multer.memoryStorage();
 
-const fileFilter = (
-  req: Request,
-  file: Express.Multer.File,
-  callback: multer.FileFilterCallback
+const fileFilter: (req: any, file: Express.Multer.File, callback: multer.FileFilterCallback
 ) => {
   // Get file extension
   const fileExtension = file.originalname.toLowerCase().split('.').pop();
